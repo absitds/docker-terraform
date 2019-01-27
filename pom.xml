@@ -6,7 +6,7 @@
 		<artifactId>docker-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>terraform-docker</artifactId>
+	<artifactId>docker-terraform</artifactId>
 	<packaging>pom</packaging>
 	<build>
 		<plugins>
