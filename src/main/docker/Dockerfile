@@ -55,15 +55,13 @@ RUN wget https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGR
     &&  mv terragrunt_linux_amd64 /go/bin/terragrunt \
     && chmod +x /go/bin/terragrunt
 
-# Add tgrunt user
+# Setup tgrunt user
 RUN groupadd -g ${TERRAGRUNT_GID} ${TERRAGRUNT_GROUP} \
     && useradd -u ${TERRAGRUNT_UID} -g ${TERRAGRUNT_GROUP} -m -s /bin/bash ${TERRAGRUNT_USER}
-
 ADD files/.ssh /home/${TERRAGRUNT_USER}/.ssh
+RUN chown -R ${TERRAGRUNT_USER}:${TERRAGRUNT_GROUP} /home/${TERRAGRUNT_USER}/.ssh \
+        && chmod -R 600 /home/${TERRAGRUNT_USER}
 
-RUN chown -R ${TERRAGRUNT_USER}:${TERRAGRUNT_GROUP} /home/${TERRAGRUNT_USER}/.ssh
-
+# Switch to the terragrunt user and start in user's home
 USER ${TERRAGRUNT_USER}:${TERRAGRUNT_GROUP}
-
-# Start in user's home
 WORKDIR /home/${TERRAGRUNT_USER}
