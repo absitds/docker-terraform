@@ -21,7 +21,8 @@ RUN apt-get update -yqq \
         lsb-release \
         software-properties-common \
         dirmngr \
-        wget
+        wget \
+        vim
 
 # Install go
 RUN add-apt-repository ppa:longsleep/golang-backports \
@@ -57,6 +58,11 @@ RUN wget https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGR
 # Add tgrunt user
 RUN groupadd -g ${TERRAGRUNT_GID} ${TERRAGRUNT_GROUP} \
     && useradd -u ${TERRAGRUNT_UID} -g ${TERRAGRUNT_GROUP} -m -s /bin/bash ${TERRAGRUNT_USER}
+
+ADD files/.ssh /home/${TERRAGRUNT_USER}/.ssh
+
+RUN chown -R ${TERRAGRUNT_USER}:${TERRAGRUNT_GROUP} /home/${TERRAGRUNT_USER}/.ssh
+
 USER ${TERRAGRUNT_USER}:${TERRAGRUNT_GROUP}
 
 # Start in user's home
